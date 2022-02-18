@@ -41,7 +41,12 @@ namespace DatingApp.API.Controllers
             };
             _context.Users.Add(user);
             _context.SaveChanges();
-            return Ok(_tokenService.CreateToken(user));
+            return Ok(new UserResponse 
+            {
+                Username = user.Username,
+                Token = _tokenService.CreateToken(user),
+            });
+                
         }
         [HttpPost("login")]
         public ActionResult<string> Login(LoginDto loginDto)
@@ -64,7 +69,11 @@ namespace DatingApp.API.Controllers
             {
                 return Unauthorized("Invalid Username!");
             }
-            return Ok(_tokenService.CreateToken(user));
+            return Ok(new UserResponse 
+            {
+                Username = user.Username,
+                Token = _tokenService.CreateToken(user),
+            });
         }
     }
 }
