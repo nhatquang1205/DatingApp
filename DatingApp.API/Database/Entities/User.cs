@@ -20,5 +20,18 @@ namespace DatingApp.API.Database.Entities
         public string Email { get; set; }
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
+        public DateTime DateOfBirth { get; set; }
+        [StringLength(255)]
+        public string KnownAs { get ;set; }
+        [StringLength(16)]
+        public string Gender { get; set; }
+        [StringLength(255)]
+        public string Introduction { get; set; }
+        [StringLength(512)]
+        public string Avatar { get; set; }
+        [StringLength(32)]
+        public string City { get; set; }
+        public DateTime? CreatedAt { get; set; }
+        public DateTime? UpdatedAt { get; set; }
     }
 }

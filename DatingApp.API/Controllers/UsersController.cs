@@ -1,38 +1,50 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DatingApp.API.Database;
+using AutoMapper;
 using DatingApp.API.Database.Entities;
+using DatingApp.API.Database.Repositories;
+using DatingApp.API.DTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace DatingApp.API.Controllers
 {
     public class UsersController : BaseApiController
     {
-        private readonly DataContext _context;
-        public UsersController(DataContext context)
+        private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
+        public UsersController(IUserRepository userRepository, IMapper mapper)
         {
-            _context = context;
+            _mapper = mapper;
+            _userRepository = userRepository;
         }
         [AllowAnonymous]
         [HttpGet]
-        public async  Task<ActionResult<IEnumerable<User>>> GetUsers()
+        public  ActionResult<IEnumerable<MemberDto>> GetUsers()
         {
-            return Ok(await _context.Users.ToListAsync());
+
+            return Ok(_userRepository.GetMembers());
         }
+        // [Authorize]
+        // [HttpGet("{id}")]
+        // public ActionResult<User> GetUsers(int id)
+        // {
+        //     var user = _userRepository.GetUserById(id);
+        //     if (user == null)
+        //     {
+        //         return NotFound();
+        //     }
+        //     return Ok(user);
+        // }
         [Authorize]
-        [HttpGet("{id}")]
-        public async Task<ActionResult<User>> GetUsers(int id)
+        [HttpGet("{username}")]
+        public ActionResult<MemberDto> GetUsers(string username)
         {
-            var user = await _context.Users.FindAsync(id);
-            if (user == null)
+            var member = _userRepository.GetMemberByUsername(username);
+            if (member == null)
             {
                 return NotFound();
             }
-            return Ok(user);
+            return Ok(member);
         }
     }
 }
