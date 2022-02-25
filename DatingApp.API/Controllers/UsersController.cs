@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DatingApp.API.Controllers
 {
+    [Authorize]
     public class UsersController : BaseApiController
     {
         private readonly IUserRepository _userRepository;
@@ -17,14 +18,12 @@ namespace DatingApp.API.Controllers
             _mapper = mapper;
             _userRepository = userRepository;
         }
-        [AllowAnonymous]
         [HttpGet]
         public  ActionResult<IEnumerable<MemberDto>> GetUsers()
         {
 
             return Ok(_userRepository.GetMembers());
         }
-        // [Authorize]
         // [HttpGet("{id}")]
         // public ActionResult<User> GetUsers(int id)
         // {
@@ -35,7 +34,6 @@ namespace DatingApp.API.Controllers
         //     }
         //     return Ok(user);
         // }
-        [Authorize]
         [HttpGet("{username}")]
         public ActionResult<MemberDto> GetUsers(string username)
         {

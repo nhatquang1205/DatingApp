@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { AccountsService } from './_services/accounts.service';
 
 @Component({
   selector: 'app-root',
@@ -8,19 +9,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent implements OnInit {
   title = 'dating-app';
-  users: any;
 
-  constructor(private http: HttpClient) {}
+  constructor(public accountsService: AccountsService) {}
 
   ngOnInit() {
-    this.getUsers();
-  }
-  getUsers() {
-    this.http.get('https://localhost:5001/api/users').subscribe(response => {
-      this.users = response;
-    }, error => {
-      console.log(error);
-    })
+    this.accountsService.refreshToken();
   }
   
 }

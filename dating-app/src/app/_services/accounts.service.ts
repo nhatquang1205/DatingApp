@@ -46,4 +46,16 @@ export class AccountsService {
     localStorage.removeItem('userToken');
     this.currentUser.next(null);
   }
+  refreshToken() {
+    const localObj= localStorage.getItem('userToken');
+    if(localObj)
+    {
+      let user= JSON.parse(localObj);
+      if (user) {
+        this.currentUser.next(user);
+        return;
+      }
+    }
+    this.logout();
+  }
 }
